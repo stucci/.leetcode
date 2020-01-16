@@ -18,20 +18,13 @@ using namespace std;
 class Solution {
 public:
     ListNode* deleteDuplicates(ListNode* head) {
-        ListNode* temp;
-        temp = head;
-        while (temp != NULL && temp->next != NULL) {
-            if(temp->val != temp->next->val) {
-                temp = temp->next;
-                continue;
+        ListNode* current = head;
+        while (current != NULL && current->next != NULL) {
+            if(current->val == current->next->val) {
+                current->next = current->next->next;
+            }else{
+                current = current->next;
             }
-            while(temp != NULL && temp->next != NULL && temp->val==temp->next->val) {
-                temp->next = temp->next->next;
-                // temp = temp->next;
-            }
-            // if(temp->val==temp->next->val) temp->next = temp->next->next;
-            // temp = temp->next;
-            // if(temp==NULL) return head;
         }
         return head;
     }
