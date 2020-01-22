@@ -1,3 +1,5 @@
+#include <bits/stdc++.h>
+using namespace std;
 /*
  * @lc app=leetcode id=112 lang=cpp
  *
@@ -17,7 +19,9 @@
 class Solution {
 public:
     bool hasPathSum(TreeNode* root, int sum) {
-        
+        if(root==NULL) return false;
+        if(root->left==NULL && root->right==NULL && sum==root->val) return true;
+        return hasPathSum(root->left, sum-root->val) || hasPathSum(root->right, sum-root->val);
     }
 };
 // @lc code=end
