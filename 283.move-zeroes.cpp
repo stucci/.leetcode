@@ -10,12 +10,10 @@ using namespace std;
 class Solution {
 public:
     void moveZeroes(vector<int>& nums) {
-        int n=nums.size();
-        for (size_t i = 0; i < n; i++) {
-            while(nums[i]==0 && i<n){
-                nums.erase(nums.begin()+i);
-                nums.push_back(0);
-                n--;
+        for (size_t i = 0, zeropos=0; i < nums.size(); i++) {
+            if(nums[i]!=0){
+                swap(nums[i], nums[zeropos]);
+                zeropos++;
             }
         }
     }
