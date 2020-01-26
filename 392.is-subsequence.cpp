@@ -10,20 +10,11 @@ using namespace std;
 class Solution {
 public:
     bool isSubsequence(string s, string t) {
-        if(s=="" && t=="") return true;
-        if(t=="") return false;
         int j=0;
-        for (size_t i = 0; i < s.size(); i++) {
-            while(1){
-                if(s[i]==t[j]) {
-                    j++;
-                    break;
-                }
-                j++;
-                if(j>=t.size()) return false;
-            }
+        for (size_t i = 0; i < t.size() && j<s.size(); i++) {
+            if(t[i]==s[j]) j++;
         }
-        return true;
+        return j==s.length();
     }
 };
 // @lc code=end
