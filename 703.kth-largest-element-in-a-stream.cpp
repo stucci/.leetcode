@@ -9,18 +9,16 @@ using namespace std;
 // @lc code=start
 class KthLargest {
 public:
-    int k;
-    vector<int> v;
+    int K;
+    priority_queue<int, vector<int>, greater<int>> pq;
     KthLargest(int k, vector<int>& nums) {
-        this->k=k;
-        for (auto& e: nums) {
-            this->v.push_back(e);
-        }
+        K=k;
+        for (auto& e: nums) add(e);
     }
     int add(int val) {
-        v.push_back(val);
-        sort(v.begin(), v.end());
-        return v[v.size()-k];
+        pq.push(val);
+        if(pq.size()>K) pq.pop();
+        return pq.top();
     }
 };
 
