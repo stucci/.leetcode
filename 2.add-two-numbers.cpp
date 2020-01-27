@@ -18,21 +18,14 @@ using namespace std;
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        if(l1==NULL&&l2==NULL) return NULL;
-        if(l1!=NULL&&l2==NULL) return l1;
-        if(l1==NULL&&l2!=NULL) return l2;
-        ListNode* ret=new ListNode((l1->val+l2->val)%10);
-        if(l1->next==NULL&&l2->next==NULL){
-            if((l1->val+l2->val)/10){
-                l1->next=new ListNode(1);
-                l2->next=new ListNode(0);
-            }else{
-                return ret;
-            }
-        }else if((l1->val+l2->val)/10){
-            l1->next->val+=1;
-        }
-        ret->next=addTwoNumbers(l1->next,l2->next);
+        return addTwoNumbersWithCarry(l1, l2, 0);
+    }
+    ListNode* addTwoNumbersWithCarry(ListNode* l1, ListNode* l2, int c) {
+        if(l1==NULL&&l2==NULL&&c==0) return NULL;
+        if(l1==NULL&&l2==NULL&&c==1) return new ListNode(1);
+        int sum=(l1?l1->val:0)+(l2?l2->val:0)+c;
+        ListNode* ret=new ListNode(sum%10);
+        ret->next=addTwoNumbersWithCarry((l1?l1->next:l1),(l2?l2->next:l2),sum/10);
         return ret;
     }
 };
