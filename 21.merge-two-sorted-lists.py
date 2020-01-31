@@ -13,19 +13,13 @@
 
 class Solution:
     def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
-        head=ListNode(0)
-        if l1==None and l2==None:
-            return None
-        elif l1==None:
-            return l2
-        elif l2==None:
-            return l1
+        if l1==None or l2==None:
+            return l1 or l2
         elif l1.val<l2.val:
-            head=l1
             l1.next=self.mergeTwoLists(l1.next, l2)
+            return l1
         else:
-            head=l2
             l2.next=self.mergeTwoLists(l1, l2.next)
-        return head
+            return l2
 # @lc code=end
 
