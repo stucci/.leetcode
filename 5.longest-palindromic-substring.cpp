@@ -19,7 +19,7 @@ public:
                     dp[i][j]=true;
                 }
                 if(dp[i][j]==true && (j-i+1)>r.length()){
-                    r=s.substr(i, j-i+1);;
+                    r=s.substr(i, j-i+1);
                 }
             }
         }
