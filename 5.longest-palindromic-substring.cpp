@@ -11,15 +11,16 @@ class Solution {
 public:
     string longestPalindrome(string s) {
         string r="";
-        for (int i = 0; i < s.length(); i++) {
-            for (int j = 1; i+j <= s.length(); j++) {
-                string t=s.substr(i,j);
-                if(t==string(t.rbegin(),t.rend())){
-                    if(r.length()<t.length()){
-                        r=t;
-                    }
+        int n=s.length();
+        vector<vector<bool>> dp(n, vector<bool>(n,false));
+        for (int i = n-1; i >= 0; i--) {
+            for (int j = i; j < n; j++) {
+                if(s[i]==s[j] && (j-i<3 || dp[i+1][j-1])) {
+                    dp[i][j]=true;
                 }
-                cout << "t: " << t << endl;
+                if(dp[i][j]==true && (j-i+1)>r.length()){
+                    r=s.substr(i, j-i+1);;
+                }
             }
         }
         return r;
