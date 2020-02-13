@@ -10,16 +10,8 @@ using namespace std;
 class Solution {
 public:
     int singleNumber(vector<int>& nums) {
-        unordered_map<int,int> um;
         int s=0;
-        for (size_t i = 0; i < nums.size(); i++) {
-            if(um[nums[i]]==0){
-                um[nums[i]]++;
-                s+=nums[i];
-            }else{
-                s-=nums[i];
-            }
-        }
+        for (auto& e: nums) s^=e;
         return s;
     }
 };
