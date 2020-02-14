@@ -18,13 +18,15 @@ using namespace std;
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
-        unordered_map<ListNode*,int> um;
-        while(head){
-            if(um[head->next]) return true;
-            um[head->next]++;
-            head=head->next;
+        if(!head||!head->next) return false;
+        ListNode* slow=head;
+        ListNode* fast=head->next;
+        while(slow!=fast){
+            if(fast==NULL || fast->next==NULL) return false;
+            slow=slow->next;
+            fast=fast->next->next;
         }
-        return false;
+        return true;
     }
 };
 // @lc code=end
