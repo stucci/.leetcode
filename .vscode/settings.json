@@ -3,5 +3,19 @@
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
     "python.pythonPath": "D:\\Python38\\python.exe",
-    "workbench.colorTheme": "Noctis Minimus"
+    "workbench.colorTheme": "Noctis Minimus",
+    "files.associations": {
+        "array": "cpp",
+        "*.tcc": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "optional": "cpp",
+        "string_view": "cpp",
+        "fstream": "cpp",
+        "istream": "cpp",
+        "streambuf": "cpp",
+        "regex": "cpp"
+    }
 }
