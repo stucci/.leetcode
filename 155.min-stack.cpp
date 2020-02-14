@@ -11,31 +11,26 @@ class MinStack {
 public:
     /** initialize your data structure here. */
     MinStack() {
-        mi=INT_MAX;
     }
     
     void push(int x) {
-        v.push_back(x);
-        mi=*min_element(v.begin(), v.end());
+        int mi=(vp.empty()?x:min(x,vp.back().second));
+        vp.push_back({x,mi});
     }
-    
+
     void pop() {
-        v.pop_back();
-        // for(int i=1, mi=v[0];i<v.size();i++) mi=min(mi,v[i]);
-        mi=INT_MAX;
-        mi=*min_element(v.begin(), v.end());
+        vp.pop_back();
     }
-    
+
     int top() {
-        return v[v.size()-1];
+        return vp.back().first;
     }
-    
+
     int getMin() {
-        return mi;
+        return vp.back().second;
     }
 private:
-    int mi;
-    vector<int> v;
+    vector<pair<int,int>> vp;
 };
 
 /**
