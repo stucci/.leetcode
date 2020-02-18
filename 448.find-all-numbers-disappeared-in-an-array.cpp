@@ -10,10 +10,13 @@ using namespace std;
 class Solution {
 public:
     vector<int> findDisappearedNumbers(vector<int>& nums) {
-        set<int> s(nums.begin(), nums.end());
         vector<int> v;
-        for (int i = 1; i <= nums.size(); i++) {
-            if(s.count(i)==0) v.push_back(i);
+        for (int i = 0; i < nums.size(); i++) {
+            int idx=abs(nums[i])-1;
+            nums[idx]=-abs(nums[idx]);
+        }
+        for (int i = 0; i < nums.size(); i++) {
+            if(nums[i]>0) v.push_back(i+1);
         }
         return v;
     }
