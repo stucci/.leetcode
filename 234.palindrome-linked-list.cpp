@@ -24,10 +24,8 @@ public:
             v.push_back(node->val);
             node=node->next;
         }
-        for (long long i = 0; i < v.size(); i++) {
-            if(v[i]!=v[v.size()-1-i]) return false;
-        }
-        return true;
+        vector<int> w(rbegin(v),rend(v));
+        return v==w;
     }
 };
 // @lc code=end
