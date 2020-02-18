@@ -18,14 +18,33 @@ using namespace std;
 class Solution {
 public:
     bool isPalindrome(ListNode* head) {
-        vector<int> v;
-        ListNode* node=head;
-        while(node!=NULL){
-            v.push_back(node->val);
-            node=node->next;
+        ListNode* fast=head;
+        ListNode* slow=head;
+        while(fast!=NULL && fast->next!=NULL){
+            fast=fast->next->next;
+            slow=slow->next;
         }
-        vector<int> w(rbegin(v),rend(v));
-        return v==w;
+        // odd nodes case
+        if(fast!=NULL) slow=slow->next;
+        slow=reverseList(slow);
+        fast=head;
+        while(slow!=NULL){
+            if(fast->val!=slow->val) return false;
+            fast=fast->next;
+            slow=slow->next;
+        }
+        return true;
+    }
+    ListNode* reverseList(ListNode* head) {
+        ListNode* prev=NULL;
+        ListNode* next=NULL;
+        while(head!=NULL){
+            next=head->next;
+            head->next=prev;
+            prev=head;
+            head=next;
+        }
+        return prev;
     }
 };
 // @lc code=end
