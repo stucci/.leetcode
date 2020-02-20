@@ -10,24 +10,22 @@ using namespace std;
 class Solution {
 public:
     int countPrimes(int n) {
+        vector<bool> isPrime(n);
+        for (long long i = 2; i < n; i++) {
+            isPrime[i]=true;
+        }
+        for (long long i = 2; i*i < n; i++) {
+            if(!isPrime[i]) continue;
+            for (long long j = i*i; j < n; j+=i) {
+                isPrime[j]=false;
+            }
+        }
         int cnt=0;
-        for (long long i = 0; i < n; i++) {
-            cnt+=is_prime(i);
+        for (long long i = 2; i < n; i++) {
+            cnt+=isPrime[i];
         }
         return cnt;
     }
-    bool is_prime(int num){
-    if (num < 2) return false;
-    else if (num == 2) return true;
-    else if (num % 2 == 0) return false;
-    double sqrtNum = sqrt(num);
-    for (int i = 3; i <= sqrtNum; i += 2) {
-        if (num % i == 0) {
-            return false;
-        }
-    }
-    return true;
-}
 };
 // @lc code=end
 
