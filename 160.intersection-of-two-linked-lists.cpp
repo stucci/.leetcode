@@ -18,6 +18,15 @@ using namespace std;
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode* pa=headA;
+        ListNode* pb=headB;
+        while(pa!=pb){
+            pa = (pa!=NULL) ? pa->next : headB;
+            pb = (pb!=NULL) ? pb->next : headA;
+        }
+        return pa;
+    }
+    ListNode *getIntersectionNodeByHashMap(ListNode *headA, ListNode *headB) {
         ListNode* tmpA=headA;
         unordered_map<ListNode*, bool> um;
         while(tmpA!=NULL){
