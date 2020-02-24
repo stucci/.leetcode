@@ -10,6 +10,13 @@ using namespace std;
 class Solution {
 public:
     int missingNumber(vector<int>& nums) {
+        int missing=nums.size();
+        for (long long i = 0; i < nums.size(); i++) {
+            missing ^= i^nums[i];
+        }
+        return
+    }
+    int missingNumberMap(vector<int>& nums) {
         unordered_map<int,bool> um;
         for (long long i = 0; i < nums.size(); i++) {
             um[nums[i]]=true;
