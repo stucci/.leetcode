@@ -16,6 +16,7 @@
         "fstream": "cpp",
         "istream": "cpp",
         "streambuf": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "cmath": "cpp"
     }
 }
