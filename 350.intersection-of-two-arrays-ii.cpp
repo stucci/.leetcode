@@ -12,6 +12,13 @@ public:
     vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
         unordered_map<int,int> m;
         vector<int> v;
+        for (auto& e: nums1) m[e]++;
+        for (auto& e: nums2) if(m[e]-- > 0) v.push_back(e);
+        return v;
+    }
+    vector<int> intersectMap(vector<int>& nums1, vector<int>& nums2) {
+        unordered_map<int,int> m;
+        vector<int> v;
         for (long long i = 0; i < nums1.size(); i++) {
             m[nums1[i]]++;
         }
