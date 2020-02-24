@@ -10,6 +10,15 @@ using namespace std;
 class Solution {
 public:
     bool isAnagram(string s, string t) {
+        if(s.length()!=t.length()) return false;
+        unordered_map<char, int> ums, umt;
+        for (long long i = 0; i < s.length(); i++) {
+            ums[s[i]]++;
+            umt[t[i]]++;
+        }
+        return ums==umt;
+    }
+    bool isAnagramSort(string s, string t) {
         sort(s.begin(), s.end());
         sort(t.begin(), t.end());
         return s==t;
