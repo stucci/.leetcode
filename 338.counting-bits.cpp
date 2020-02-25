@@ -12,6 +12,13 @@ public:
     vector<int> countBits(int num) {
         vector<int> v(num+1);
         for (long long i = 1; i <= num; i++) {
+            v[i]=v[i&(i-1)]+1;
+        }
+        return v;
+    }
+    vector<int> countBitsInit(int num) {
+        vector<int> v(num+1);
+        for (long long i = 1; i <= num; i++) {
             int l=floor(log2(i));
             int d=pow(2,l);
             v[i]=v[i-d]+1;
