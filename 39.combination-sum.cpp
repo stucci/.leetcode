@@ -11,22 +11,29 @@ class Solution {
 public:
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
         vector<vector<int>> v;
-        for (long long i = 0; i < candidates.size(); i++) {
-            vector<int> t;
-            helper(candidates, target, i, v, t);
-        }
+        vector<int> t;
+        helper(candidates, target, 0, v, t);
         return v;
     }
     void helper(vector<int>& candidates, int target, int index,  vector<vector<int>>& v, vector<int> t){
-        int nexttarget=target-candidates[index];
-        t.push_back(candidates[index]);
-        if(nexttarget==0){
+        for (long long i = 0; i < t.size(); i++) {
+            cout << "t[i]: " << t[i] << " ";
+        }
+        cout << "target: " << target << endl;
+        if(target==0){
             v.push_back(t);
-        }else if(nexttarget<0){
+            return;
+        }else if(target<0){
             return;
         }
         for (long long i = index; i < candidates.size(); i++) {
-            helper(candidates, nexttarget, i, v, t);
+            t.push_back(candidates[i]);
+            helper(candidates, target-candidates[i], i, v, t);
+            for (long long i = 0; i < t.size(); i++) {
+                cout << "t[i]: " << t[i] << " ";
+            }
+            cout << "target befort popback: " << target << endl;
+            t.pop_back();
         }
     }
 };
