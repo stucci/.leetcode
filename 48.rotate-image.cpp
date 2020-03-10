@@ -9,7 +9,16 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
+    // [A common method to rotate the image - LeetCode Discuss](https://leetcode.com/problems/rotate-image/discuss/18872/A-common-method-to-rotate-the-image)
     void rotate(vector<vector<int>>& matrix) {
+        reverse(matrix.begin(), matrix.end());
+        for (long long i = 0; i < matrix.size(); i++) {
+            for (long long j = i+1; j < matrix[i].size(); j++) {
+                swap(matrix[i][j], matrix[j][i]);
+            }
+        }
+    }
+    void rotateInit(vector<vector<int>>& matrix) {
         for (long long i = 0; i < matrix[0].size()/2; i++) {
             int beg=i;
             int end=matrix[0].size()-1-beg;
