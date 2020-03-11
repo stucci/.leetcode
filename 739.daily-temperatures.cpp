@@ -11,6 +11,16 @@ class Solution {
 public:
     vector<int> dailyTemperatures(vector<int>& T) {
         vector<int> v(T.size());
+        stack<int> s;
+        for (int i = T.size() - 1; i >= 0; i--) {
+            while(s.empty()==false && T[i]>=T[s.top()]) s.pop();
+            v[i]=(s.empty()?0:s.top()-i);
+            s.push(i);
+        }
+        return v;
+    }
+    vector<int> dailyTemperaturesNextArray(vector<int>& T) {
+        vector<int> v(T.size());
         vector<int> next(101,INT_MAX);
         for (int i = T.size() - 1; i >= 0; i--) {
             int warmer_index=INT_MAX;
