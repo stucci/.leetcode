@@ -10,22 +10,15 @@ using namespace std;
 class Solution {
 public:
     vector<int> dailyTemperatures(vector<int>& T) {
-        int n=T.size();
-        unordered_map<int,vector<int>> m;
-        vector<int> v(n);
-        for (long long i = 0; i < n; i++) {
-            m[T[i]].push_back(i);
-        }
-        for (int i = 0; i < n; i++) {
-            int mi=INT_MAX;
-            for (long long j = T[i]+1; j <= 100; j++){
-                for (long long k = 0; k < m[j].size(); k++) {
-                    if(m[j][k]>i){
-                        mi=min(mi,m[j][k]-i);
-                    }
-                }
+        vector<int> v(T.size());
+        vector<int> next(101,INT_MAX);
+        for (int i = T.size() - 1; i >= 0; i--) {
+            int warmer_index=INT_MAX;
+            for (int t = T[i]+1; t <= 100; t++) {
+                if(next[t]<warmer_index) warmer_index=next[t];
             }
-            v[i]=(mi==INT_MAX?0:mi);
+            if(warmer_index<INT_MAX) v[i]=warmer_index-i;
+            next[T[i]]=i;
         }
         return v;
     }
