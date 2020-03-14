@@ -10,11 +10,10 @@ using namespace std;
 class Solution {
 public:
     int findDuplicate(vector<int>& nums) {
-        sort(nums.begin(), nums.end());
-        for (long long i = 0; i < nums.size(); i++) {
-            if(nums[i]==nums[i+1]) return nums[i];
-        }
-        return 0;
+        int n=nums.size();
+        int gauss=n*(n+1)/2;
+        int sum=accumulate(nums.begin(), nums.end(),0);
+        return n-(gauss-sum);
     }
 };
 // @lc code=end
