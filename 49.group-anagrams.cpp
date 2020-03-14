@@ -16,11 +16,9 @@ public:
             sort(tmp.begin(), tmp.end());
             mv[tmp].push_back(strs[i]);
         }
-        vector<vector<string>> vv(mv.size());
-        int i=0;
+        vector<vector<string>> vv;
         for (auto& e: mv) {
-            vv[i]=e.second;
-            i++;
+            vv.push_back(e.second);
         }
         return vv;
     }
