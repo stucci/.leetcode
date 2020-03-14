@@ -11,9 +11,14 @@ class Solution {
 public:
     int findDuplicate(vector<int>& nums) {
         int n=nums.size();
-        int gauss=n*(n+1)/2;
-        int sum=accumulate(nums.begin(), nums.end(),0);
-        return n-(gauss-sum);
+        for (long long i = 1; i <= n; i++) {
+            int cnt=0;
+            for (long long j = 0; j < n; j++) {
+                if(i==nums[j]) cnt++;
+                if(cnt>1) return i;
+            }
+        }
+        return 0;
     }
 };
 // @lc code=end
