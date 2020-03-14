@@ -10,15 +10,21 @@ using namespace std;
 class Solution {
 public:
     int findDuplicate(vector<int>& nums) {
-        int n=nums.size();
-        for (long long i = 1; i <= n; i++) {
-            int cnt=0;
-            for (long long j = 0; j < n; j++) {
-                if(i==nums[j]) cnt++;
-                if(cnt>1) return i;
-            }
+        // find intersection
+        int tortoise=nums[0];
+        int hare=nums[0];
+        do {
+            tortoise=nums[tortoise];
+            hare=nums[nums[hare]];
+        } while (tortoise!=hare);
+        // find the entrance of the cycle.
+        int ptr1=nums[0];
+        int ptr2=tortoise;
+        while(ptr1!=ptr2){
+            ptr1=nums[ptr1];
+            ptr2=nums[ptr2];
         }
-        return 0;
+        return ptr1;
     }
 };
 // @lc code=end
