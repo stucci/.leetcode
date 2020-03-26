@@ -11,6 +11,18 @@ class Solution {
 public:
     vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
         int n=people.size();
+        auto cmp=[](vector<int> a, vector<int> b){
+            return a[0]>b[0] || (a[0]==b[0] && a[1]<b[1]);
+        };
+        sort(people.begin(), people.end(), cmp);
+        vector<vector<int>> v;
+        for (auto& e: people) {
+            v.insert(v.begin()+e[1], e);
+        }
+        return v;
+    }
+    vector<vector<int>> reconstructQueue_init(vector<vector<int>>& people) {
+        int n=people.size();
         sort(people.begin(), people.end());
         // for (long long i = 0; i < people.size(); i++) {
         //     cout << people[i][0] << endl;
