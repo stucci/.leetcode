@@ -24,12 +24,11 @@ public:
     void fizz(function<void()> printFizz) {
         while(true){
             unique_lock<mutex> lock(m);
-            while(count<=n && !(count%3==0&&count%5!=0)){
-                cv.wait(lock);
-            }
+            cv.wait(lock, [&](){return (count>n || (count%3==0 && count%5!=0));});
             if(count>n) return;
             printFizz();
             ++count;
+            //lock.unlock();
             cv.notify_all();
         }
     }
@@ -38,12 +37,11 @@ public:
     void buzz(function<void()> printBuzz) {
         while(true){
             unique_lock<mutex> lock(m);
-            while(count<=n && !(count%3!=0&&count%5==0)){
-                cv.wait(lock);
-            }
+            cv.wait(lock, [&](){return (count>n || (count%3!=0 && count%5==0));});
             if(count>n) return;
             printBuzz();
             ++count;
+            //lock.unlock();
             cv.notify_all();
         }
     }
@@ -52,12 +50,11 @@ public:
 	void fizzbuzz(function<void()> printFizzBuzz) {
         while(true){
             unique_lock<mutex> lock(m);
-            while(count<=n && !(count%3==0&&count%5==0)){
-                cv.wait(lock);
-            }
+            cv.wait(lock, [&](){return (count>n || (count%3==0 && count%5==0));});
             if(count>n) return;
             printFizzBuzz();
             ++count;
+            //lock.unlock();
             cv.notify_all();
         }
     }
@@ -66,12 +63,11 @@ public:
     void number(function<void(int)> printNumber) {
         while(true){
             unique_lock<mutex> lock(m);
-            while(count<=n && !(count%3!=0&&count%5!=0)){
-                cv.wait(lock);
-            }
+            cv.wait(lock, [&](){return (count>n || (count%3!=0 && count%5!=0));});
             if(count>n) return;
             printNumber(count);
             ++count;
+            //lock.unlock();
             cv.notify_all();
         }
     }
