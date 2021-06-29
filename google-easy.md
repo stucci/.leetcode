@@ -1,5 +1,5 @@
 ```cpp
-// 411. Add Strings
+// 415. Add Strings
 
 // approach
 // 1. naive
@@ -12,6 +12,7 @@
 // edge cases
 // "" "" -> ""
 // "0" "0" -> "0"
+// "1" "9" -> "10"
 // "99" "3" -> "102"
 
 class Solution{
@@ -19,25 +20,33 @@ public:
     string addStrings(string num1, string num2){
         string ret;
         int ca = 0;
-        for(int i=0; i<max(num1.size(), num2.size()); i++){
-            // int d1 = num1[i] - '0';
-            int d1 = i<num1.size() ? num1[i] - '0' : 0;
-            int d2 = i<num2.size() ? num2[i] - '0' : 0;
+        int n1 = num1.size(), n2 = num2.size();
+        for(int i=0; i<max(n1, n2); i++){
+            int d1 = i<n1 ? num1[n1-1-i] - '0' : 0;
+            int d2 = i<n2 ? num2[n2-1-i] - '0' : 0;
             int s = d1 + d2 + ca;
             char c = '0' + s%10;
             ret += c;
             ca = s / 10;
         }
+        if(ca) ret += '1';
         return string(ret.rbegin(), ret.rend());
     }
-}
+};
 ```
 
 ```cpp
 // 844. Backspace String Compare
 
 // approach
-// 1. naive
+// 1. build new string
+//    time:O(M+N) space: O(M+N)
+// 2. stack
+//    time:O(M+N) space: O(M+N)
+// 3. two pointer 後ろから比較していって、backspaceが現れたら現れ数分だけ、英文字をskipする。
+//    time:O(M+N) space: O(1)
+// 4. erase original string
+//    time:O(M+N) space: O(1)
 
 // QA
 // length of s?
@@ -71,14 +80,15 @@ public:
             }
         }
     }
-}
+};
 ```
 
 ```cpp
 // 504. Base 7
 
 // approach
-// 1. naive
+// 1. iterative
+// 2. recursive
 
 // QA
 // range of num?
@@ -88,27 +98,40 @@ public:
 // 7 -> "10"
 // -7 -> "-10"
 
+// 1. iterative
 class Solution{
 public:
     string convertToBase7(int num){
+        if(num==0) return "0";
         string ret;
         int tmp = abs(num);
-        while(tmp>=7){
+        while(tmp){
             ret = to_string(tmp%7) + ret;
             tmp /= 7;
         }
-        ret = to_string(num) + ret;
         if(num<0) ret = "-" + ret;
         return ret;
     }
-}
+};
+
+// 2. recursive
+class Solution{
+public:
+    string convertToBase7(int num){
+        if(num<0) return '-' + convertToBase7(-num);
+        if(num<7) return to_string(num);
+        return convertToBase7(num/7) + convertToBase7(num%7);
+    }
+};
 ```
 
 ```cpp
 // 551. Student Attendance Recode I
 
 // approach
-// 1. naive counting
+// 1. count 'A' and find 'L'
+// 2. count 'A' and 'L'
+// 3. using Regex
 
 // QA
 // length of s?
@@ -125,7 +148,7 @@ public:
             if(c=='A'){
                 cntA++;
                 cntL=0;
-                if(cntA==3) return false;
+                if(cntA==2) return false;
             }else if(c=='L'){
                 cntL++;
                 if(cntL==3) return false;
@@ -135,15 +158,15 @@ public:
         }
         return true;
     }
-}
+};
 ```
 
 ```cpp
 // 374. Guess Number Higher or Lower
 
 // approach
-// 1. naive
-// 2. binary-search
+// 1. brute force
+// 2. binary-search 数値の上限がINT_MAXに近いときは、(lo+hi)/2がoverflowするので、lo+(hi-lo)/2と工夫しなければならないことに注意
 
 // QA
 // range of n?
@@ -157,7 +180,7 @@ public:
     int guessNumber(int n){
         int lo = 0, hi = n;
         while(hi-lo>1){
-            int mi = (lo+hi)/2;
+            int mi = lo + (hi-lo)/2;
             int ret = guess(mi);
             if(ret == 0) return mi;
             else if(ret>0) lo = mi;
@@ -165,7 +188,7 @@ public:
         }
         return hi;
     }
-}
+};
 ```
 
 ```cpp
@@ -198,7 +221,7 @@ public:
         }
         return ret;
     }
-}
+};
 ```
 
 ```cpp
@@ -207,6 +230,8 @@ public:
 //// approach
 // 1. naive O(N^2)
 // 2. two pointers O(N)
+//    2-1. iterative
+//    2-2. recursive
 
 //// QA
 // s.length?
@@ -256,7 +281,7 @@ public:
         return false;
 
     }
-}
+};
 ```
 
 leetcodeの拡張機能がうまくworkしないので、ここで解く
