@@ -426,6 +426,7 @@ public:
         return maxcnt;
     }
 };
+
 ```
 
 ```cpp
@@ -457,7 +458,8 @@ public:
             }
         }
     }
-}
+};
+
 ```
 
 ```cpp
@@ -482,6 +484,7 @@ public:
         return s == string(s.rbegin(), s.rend());
     }
 };
+
 ```
 
 ```cpp
@@ -508,12 +511,14 @@ public:
                     if(i-1>=0 && s[i-1]==ch) continue;
                     if(i+1<=s.size()-1 && s[i+1]==ch) continue;
                     s[i]=ch;
+                    break;
                 }
             }
         }
         return s;
     }
 };
+
 ```
 
 ```cpp
