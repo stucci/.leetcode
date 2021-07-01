@@ -1,4 +1,143 @@
 ```cpp
+// 501. Find Mode in Binary Search Tree
+
+// approach
+// 1. naive count
+// 2. morris traversal
+
+// QA
+// number of nodes?
+// range of val?
+
+// edge cases
+// [] -> []
+// [1] -> [1]
+// [1, 1, 2, 2] -> [1, 2]
+
+class Solution{
+public:
+    vector<int> findMode(TreeNode* root){
+        unordered_map<int, int> m; // {val : count}
+        int maxcnt = 0;
+        dfs(root, m, maxcnt);
+        vector<int> ret;
+        for(auto [val, cnt] : m){
+            if(cnt == maxcnt) ret.push_back(val);
+        }
+        return ret;
+    }
+    void dfs(TreeNode* node, unordered_map<int, int>& m, int& maxcnt){
+        if(node==NULL) return;
+        m[node->val]++;
+        maxcnt = max(maxcnt, m[node->val]);
+        dfs(node->left, m, maxcnt);
+        dfs(node->right, m, maxcnt);
+    }
+};
+
+```
+
+```cpp
+// 110. Balanced Binary Tree
+
+// approach
+// 1. DFS and compare max depth and min depth
+// 2. BFS
+
+// QA
+// number of nodes?
+
+// edge cases
+// [] -> true
+//     1
+//    /
+//   2   -> false
+//  /
+// 3
+
+// 1. DFS
+class Solution{
+public:
+    bool isBalanced(TreeNode* root){
+        if(root == NULL) return true;
+        int max_depth = 0, min_depth = INT_MAX;
+        dfs(root, 0, max_depth, min_depth);
+        return (max_depth - min_depth <= 1);
+    }
+    void dfs(TreeNode* node, int depth, int& max_depth, int& min_depth){
+        if(node == NULL){
+            max_depth = max(max_depth, depth);
+            min_depth = min(min_depth, depth);
+        }else{
+            dfs(node->left, depth + 1, max_depth, min_depth);
+            dfs(node->right, depth + 1, max_depth, min_depth);
+        }
+    }
+};
+
+// 2. BFS
+class Solution{
+public:
+    bool isBalanced(TreeNode* root){
+        queue<pair<TreeNode*, int>> q; // {node, depth}
+        int depth = 0, max_depth = 0, min_depth = INT_MAX;
+        if(root!=NULL) q.push({root, depth});
+        while(!q.empty()){
+            auto [node, depth] = q.front();
+            q.pop();
+            if(node == NULL) {
+                max_depth = max(max_depth, depth);
+                min_depth = min(min_depth, depth);
+                if(max_depth - min_depth > 1) return false;
+            }else{
+                q.push(root->left, depth + 1);
+                q.push(root->right, depth + 1);
+            }
+        }
+        return true;
+    }
+};
+
+```
+
+```cpp
+// 203. Remove Linked List Elements
+
+// approach
+// 1. iterative
+// 2. recursive
+
+// QA
+// range of val?
+// number of node?
+
+// edge cases
+// [] 1 -> []
+// [1], 1 -> []
+// [1, 1], 1 -> []
+// [1, 1], 2 -> [1, 1]
+// [1, 2, 3], 2 -> [1, 3]
+
+class Solution{
+public:
+    ListNode* removeElements(ListNode* head, int val){
+        ListNode* prev = NULL, curr = head;
+        while(curr != NULL){
+            if(curr->val == val){
+                if(prev == NULL) head = curr->next;
+                else prev->next = curr->next;
+            }else{
+                prev = curr;
+            }
+            curr = curr->next;
+        }
+        return head;
+    }
+};
+
+```
+
+```cpp
 // 1603. Design Parking System
 
 // approach
