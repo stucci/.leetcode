@@ -1,3 +1,18 @@
+* SubArrayにおける、ここの要素の出現数
+  * [［Java/C++/Python］ O(N) Time, O(1) Space - LeetCode Discuss](https://leetcode.com/problems/sum-of-all-odd-length-subarrays/discuss/854184/JavaC%2B%2BPython-O(N)-Time-O(1)-Space)
+    要するに、`(n-i)*(i+1)`になる。もはや、覚えておこう。
+    偶数長さのsubarrayのみの場合の出現数は上記を単に2で割って、`(n-1)*(i+1)/2`
+    奇数長さのsubarrayのみの場合の出現数は上記を+1して2で割って、`((n-1)*(i+1)+1)/2`
+    となる。
+
+* Morris traversal とは
+  * 数パターン実装があるようだが、以下の説明が一番分かりやすいと思う
+  * [Binary Tree Inorder Traversal - LeetCode](https://leetcode.com/problems/binary-tree-inorder-traversal/solution/)
+    * しかし、上記は、in-orderのときのmorris-traversal
+      morris-traversalはin-orderか、pre-orderかで実装が変わる。
+      pre-orderの場合は以下
+      [Binary Tree Preorder Traversal - LeetCode](https://leetcode.com/problems/binary-tree-preorder-traversal/solution/)
+
 ```cpp
 // 501. Find Mode in Binary Search Tree
 
@@ -588,8 +603,8 @@ class Solution{
 public:
     void duplicateZeros(vector<int>& arr){
         int n = arr.size();
-        for(int i=0; i < n; i++){
-            if(arr[i]==0 && i < n-1){
+        for(int i=0; i < n - 1; i++){
+            if(arr[i]==0){
                 for(int j=n-1; j > i; j--){
                     arr[j] = arr[j-1];
                 }
