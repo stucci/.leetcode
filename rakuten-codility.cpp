@@ -43,7 +43,7 @@ class Solution{
 public:
     int maximumUnits(vector<vector<int>>& boxTypes, int truckSize){
         auto cmp = [](const vector<int> a, const vector<int> b){ return a[1] > b[1]; };
-        sort(boxTypes.bigin(), boxTypes.end(), cmp);
+        sort(boxTypes.begin(), boxTypes.end(), cmp);
         int sum = 0;
         for(auto box : boxTypes){
             if(truckSize >= box[0]){
@@ -199,6 +199,7 @@ int solution(int N){
 
 vector<int> solution(vector<int> &A, int K){
     int n = A.size();
+    if(n==0) return A;
     K %= n;
     if(K==0) return A;
     vector<int> ret(A.size());
@@ -239,14 +240,14 @@ int solution(vector<int> &A){
 // TapeEquilibrium
 
 int solution(vector<int> &A){
-    int n = A.size()
+    int n = A.size();
     vector<int> cumsum(n);
     cumsum[0] = A[0];
     for(int i = 1; i < n; i++){
-        cumsum[i] = cumsum[0] + A[i];
+        cumsum[i] = cumsum[i-1] + A[i];
     }
-    int mi = INT_MAX;
-    for(int i = 0; i < n; i++){
+    int mi = 10000;
+    for(int i = 0; i < n - 1; i++){
         mi = min( mi, abs(cumsum[i] - (cumsum[n-1] - cumsum[i])) );
     }
     return mi;
@@ -257,9 +258,9 @@ int solution(vector<int> &A){
 
 int solution(int X, vector<int> &A){
     unordered_set<int> leaves;
-    for(int i = 0; i < A.size(); i++){
-        leaves.push(A[i]);
-        if(leaves.size() == X) return i;
+    for(int i = 0; i < (int)A.size(); i++){
+        leaves.insert(A[i]);
+        if((int)leaves.size() == X) return i;
     }
     return -1;
 }
