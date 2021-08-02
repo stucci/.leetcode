@@ -2,6 +2,10 @@
 using namespace std;
 
 // -----------------------------------------------------------------------------
+// LeetCode
+// -----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
 // 53. Maximum Subarray
 
 class Solution{
@@ -166,3 +170,96 @@ public:
         return hi;
     }
 };
+
+// -----------------------------------------------------------------------------
+// Codility
+// -----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+// BinaryGap
+
+int solution(int N){
+    bool cnt_start = false;
+    int cnt = 0, max_gap = 0;
+    while(N){
+        if(N%2){
+            cnt_start = true;
+            max_gap = max(max_gap, cnt);
+            cnt = 0;
+        }else if(cnt_start){
+            cnt++;
+        }
+        N /= 2;
+    }
+    return max_gap;
+}
+
+// -----------------------------------------------------------------------------
+// CyclicRotation
+
+vector<int> solution(vector<int> &A, int K){
+    int n = A.size();
+    K %= n;
+    if(K==0) return A;
+    vector<int> ret(A.size());
+    for(int i = 0; i < n; i++){
+        ret[(i + K) % n] = A[i];
+    }
+    return ret;
+}
+
+// -----------------------------------------------------------------------------
+// OddOccurrenceInArray
+
+int solution(vector<int> &A){
+    int ret = 0;
+    for(auto n : A){
+        ret ^= n;
+    }
+    return ret;
+}
+
+// -----------------------------------------------------------------------------
+// FrogJmp
+
+int solution(int X, int Y, int D){
+    return ceil((Y - X) * 1.0 / D);
+}
+
+// -----------------------------------------------------------------------------
+// PermMissingElem
+
+int solution(vector<int> &A){
+    int sum = 0, n = A.size();
+    for(auto a : A) sum += a;
+    return ((n + 1) * (n + 2)) / 2 - sum;
+}
+
+// -----------------------------------------------------------------------------
+// TapeEquilibrium
+
+int solution(vector<int> &A){
+    int n = A.size()
+    vector<int> cumsum(n);
+    cumsum[0] = A[0];
+    for(int i = 1; i < n; i++){
+        cumsum[i] = cumsum[0] + A[i];
+    }
+    int mi = INT_MAX;
+    for(int i = 0; i < n; i++){
+        mi = min( mi, abs(cumsum[i] - (cumsum[n-1] - cumsum[i])) );
+    }
+    return mi;
+}
+
+// -----------------------------------------------------------------------------
+// FrogRiverOne
+
+int solution(int X, vector<int> &A){
+    unordered_set<int> leaves;
+    for(int i = 0; i < A.size(); i++){
+        leaves.push(A[i]);
+        if(leaves.size() == X) return i;
+    }
+    return -1;
+}
