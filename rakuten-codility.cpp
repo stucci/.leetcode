@@ -264,3 +264,164 @@ int solution(int X, vector<int> &A){
     }
     return -1;
 }
+
+// -----------------------------------------------------------------------------
+// MaxCounters
+
+vector<int> solution(int N, vector<int> &A){
+    int maxcnt = 0, base = 0;
+    vector<int> ret(N);
+    for(auto a : A){
+        if(a == N+1){
+            base = maxcnt;
+        }else{
+            ret[a-1] = max(ret[a-1], base) + 1;
+            maxcnt = max(maxcnt, ret[a-1]);
+        }
+    }
+    for(auto &n : ret){
+        n = max(n, base);
+    }
+    return ret;
+}
+
+// -----------------------------------------------------------------------------
+// MissingInteger
+
+int solution(vector<int> &A){
+    set<int> s(A.begin(), A.end());
+    int prev = 0;
+    for(auto n : s){
+        if(n <= 0) continue;
+        else if(prev + 1 < n) break;
+        prev = n;
+    }
+    return prev + 1;
+}
+
+// -----------------------------------------------------------------------------
+// PermCheck
+
+int solution(vector<int> &A){
+    set<int> s(A.begin(), A.end());
+    int first = *s.begin(), last = *(prev(s.end()));
+    if(s.size() == A.size() && first == 1 && last == A.size()) return 1;
+    return 0;
+}
+
+// -----------------------------------------------------------------------------
+// CountDiv
+
+int solution(int A, int B, int K){
+    return (B/K) - ((A-1)/K);
+}
+
+// -----------------------------------------------------------------------------
+// GenomicRangeQuery
+
+vector<int> solution(string &S, vector<int> &P, vector<int> &Q){
+    vector<vector<int>> presum(S.size()+1, vector<int>(4));
+    map<char, int> m;
+    m['A'] = 0;
+    m['C'] = 1;
+    m['G'] = 2;
+    m['T'] = 3;
+    for(int i = 0; i < S.size(); i++){
+        for(int j = 0; j < 4; j++){
+            presum[i][j] = presum[i-1][j];
+        }
+        presum[i][m[S[i]]]++;
+    }
+    vector<int> ret;
+    for(int i = 0; i < P.size(); i++){
+        for(int j = 0; j < 4; j++){
+            int cnt = presum[Q[i]+1][j] - presum[P[i]][j];
+            if(cnt > 0) {
+                ret.push_back(j+1);
+                break;
+            }
+        }
+    }
+    return ret;
+}
+
+// -----------------------------------------------------------------------------
+// MinAvgTwoSlice
+
+int solution(vector<int> &A){
+    int curpos = 0, cursum = A[0], minpos = 0;
+    double minavg = 10000;
+    for(int i = 1; i < A.size(); i++){
+        cursum += A[i];
+        double curavg = cursum / (i - curpos + 1);
+        if(minavg > curavg){
+            minavg = curavg;
+            minpos = curpos;
+        }
+        if(cursum > A[i] * (i - curpos + 1)){
+            cursum = A[i];
+            curpos = i;
+        }
+    }
+    return minpos;
+}
+
+// -----------------------------------------------------------------------------
+// PassingCars
+
+int solution(vector<int> &A){
+    int cnt0 = 0, cnt1 = 0, sum = 0, limit = 1e9;
+    for(auto a : A){
+        if(a==0){
+            sum += (cnt0 * cnt1);
+            if(sum > limit) return -1;
+            cnt0++;
+            cnt1 = 0;
+        }else{
+            cnt1++;
+        }
+    }
+    sum += (cnt0 * cnt1);
+    if(sum > limit) return -1;
+    return sum;
+}
+
+// -----------------------------------------------------------------------------
+// Distinct
+
+int solution(vector<int> &A){
+    set<int> s(A.begin(), A.end());
+    return s.size();
+}
+
+// -----------------------------------------------------------------------------
+// MaxProductOfThree
+
+int solution(vector<int> &A){
+    sort(A.begin(), A.end());
+    int n = A.size();
+    return max(A[n-1] * A[n-2] * A[n-3], A[n-1] * A[0] * A[1]);
+}
+
+// -----------------------------------------------------------------------------
+// NumberOfDiscIntersections
+
+int solution(vector<int> &A){
+    vector<pair<int, int>> points; // { pos : flag }
+    for(int i = 0; i < A.size(); i++){
+        points.push_back({i - A[i], 1});
+        points.push_back({i + A[i], 0});
+    }
+    sort(points.begin(), points.end());
+    int cnt = 0, ret = 0, limit = 1e7;
+    for(auto [p, f] : points){
+        if(f){
+            ret += cnt;
+            if(ret > limit) return -1;
+            cnt++;
+        }else{
+            cnt--;
+        }
+    }
+    return ret;
+}
