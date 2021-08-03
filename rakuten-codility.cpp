@@ -305,7 +305,7 @@ int solution(vector<int> &A){
 int solution(vector<int> &A){
     set<int> s(A.begin(), A.end());
     int first = *s.begin(), last = *(prev(s.end()));
-    if(s.size() == A.size() && first == 1 && last == A.size()) return 1;
+    if(s.size() == A.size() && first == 1 && last == (int)A.size()) return 1;
     return 0;
 }
 
