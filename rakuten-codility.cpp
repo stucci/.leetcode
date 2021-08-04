@@ -425,3 +425,76 @@ int solution(vector<int> &A){
     }
     return ret;
 }
+
+// -----------------------------------------------------------------------------
+// Triangle
+
+int solution(vector<int> &A){
+    if(A.size() < 3) return 0;
+    sort(A.begin(), A.end());
+    for(int i = 2; i < A.size(); i++){
+        if(A[i-2] > A[i] - A[i-1]) return 1;
+    }
+    return 0;
+}
+
+// -----------------------------------------------------------------------------
+// Brackets
+
+int solution(string &S){
+    stack<char> stk;
+    for(char c : S){
+        if(c=='(' || c=='{' || c=='['){
+            stk.push(c);
+        }else{
+            if(stk.empty()) return 0;
+            if(c==')'){
+                if(stk.top()=='('){
+                    stk.pop();
+                }else{
+                    return 0;
+                }
+            }else if(c=='}'){
+                if(stk.top()=='{'){
+                    stk.pop();
+                }else{
+                    return 0;
+                }
+            }else{
+                if(stk.top()=='['){
+                    stk.pop();
+                }else{
+                    return 0;
+                }
+            }
+        }
+    }
+    return 1;
+}
+
+// -----------------------------------------------------------------------------
+// Fish
+
+int solution(vector<int> &A, vector<int> &B){
+    stack<char> downfish;
+    int upfish = 0;
+    for(int i = 0; i < A.size(); i++){
+        if(stk.empty()){
+            if(B[i] == 0){
+                upfish++;
+            }else{
+                downfish.push(A[i]);
+            }
+        }else{
+            if(B[i] == 0){
+                while(!downfish.empty() && downfish.top() < A[i]){
+                    downfish.pop();
+                }
+                if(downfish.empty()) upfish++;
+            }else{
+                donwfish.push(A[i]);
+            }
+        }
+    }
+    return upfish + donwfish.size();
+}
