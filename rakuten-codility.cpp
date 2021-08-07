@@ -1,3 +1,11 @@
+// codilityで気をつけることリスト
+// [ ] 空配列
+// [ ] edge case 値が0のとき。要素数が1つだけのとき
+// [ ] off-by-one error 特に、0のとき
+// [ ] overflow check INT_MAXのときにoverflowしないかどうか？
+// [ ] limit check limitのチェックはlimitを超えるか、overflowして、0より小さいか？を調べる
+// [ ] test caseは多めに。油断しない。
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -313,7 +321,10 @@ int solution(vector<int> &A){
 // CountDiv
 
 int solution(int A, int B, int K){
-    return (B/K) - ((A-1)/K);
+    if(K==1) return B-A+1;
+    int ret = (B/K) - ((A-1)/K);
+    if(A==0) ret++;
+    return ret;
 }
 
 // -----------------------------------------------------------------------------
@@ -326,14 +337,14 @@ vector<int> solution(string &S, vector<int> &P, vector<int> &Q){
     m['C'] = 1;
     m['G'] = 2;
     m['T'] = 3;
-    for(int i = 0; i < S.size(); i++){
+    for(int i = 0; i < (int)S.size(); i++){
         for(int j = 0; j < 4; j++){
-            presum[i][j] = presum[i-1][j];
+            presum[i+1][j] = presum[i][j];
         }
-        presum[i][m[S[i]]]++;
+        presum[i+1][m[S[i]]]++;
     }
     vector<int> ret;
-    for(int i = 0; i < P.size(); i++){
+    for(int i = 0; i < (int)P.size(); i++){
         for(int j = 0; j < 4; j++){
             int cnt = presum[Q[i]+1][j] - presum[P[i]][j];
             if(cnt > 0) {
@@ -350,10 +361,10 @@ vector<int> solution(string &S, vector<int> &P, vector<int> &Q){
 
 int solution(vector<int> &A){
     int curpos = 0, cursum = A[0], minpos = 0;
-    double minavg = 10000;
+    double minavg = 100000;
     for(int i = 1; i < A.size(); i++){
         cursum += A[i];
-        double curavg = cursum / (i - curpos + 1);
+        double curavg = cursum * 1.0 / (i - curpos + 1);
         if(minavg > curavg){
             minavg = curavg;
             minpos = curpos;
@@ -374,7 +385,7 @@ int solution(vector<int> &A){
     for(auto a : A){
         if(a==0){
             sum += (cnt0 * cnt1);
-            if(sum > limit) return -1;
+            if(sum > limit || sum < 0) return -1;
             cnt0++;
             cnt1 = 0;
         }else{
@@ -382,7 +393,7 @@ int solution(vector<int> &A){
         }
     }
     sum += (cnt0 * cnt1);
-    if(sum > limit) return -1;
+    if(sum > limit || sum < 0) return -1;
     return sum;
 }
 
@@ -408,14 +419,15 @@ int solution(vector<int> &A){
 
 int solution(vector<int> &A){
     vector<pair<int, int>> points; // { pos : flag }
-    for(int i = 0; i < A.size(); i++){
-        points.push_back({i - A[i], 1});
-        points.push_back({i + A[i], 0});
+    for(int i = 0; i < (int)A.size(); i++){
+        points.push_back({i - A[i], 0});
+        if(A[i] < INT_MAX - i)
+            points.push_back({i + A[i], 1});
     }
     sort(points.begin(), points.end());
     int cnt = 0, ret = 0, limit = 1e7;
-    for(auto [p, f] : points){
-        if(f){
+    for(auto p : points){
+        if(p.second == 0){
             ret += cnt;
             if(ret > limit) return -1;
             cnt++;
@@ -426,13 +438,16 @@ int solution(vector<int> &A){
     return ret;
 }
 
+// vector<pair<int, int>> のソートは、特に比較関数を用意せずとも、
+// firstが同じ場合は、secondの値で昇順にソートしてくれる。
+
 // -----------------------------------------------------------------------------
 // Triangle
 
 int solution(vector<int> &A){
     if(A.size() < 3) return 0;
     sort(A.begin(), A.end());
-    for(int i = 2; i < A.size(); i++){
+    for(int i = 2; i < (int)A.size(); i++){
         if(A[i-2] > A[i] - A[i-1]) return 1;
     }
     return 0;
@@ -469,6 +484,7 @@ int solution(string &S){
             }
         }
     }
+    if(stk.size() > 0) return 0;
     return 1;
 }
 
@@ -476,25 +492,17 @@ int solution(string &S){
 // Fish
 
 int solution(vector<int> &A, vector<int> &B){
-    stack<char> downfish;
+    stack<int> downfish;
     int upfish = 0;
-    for(int i = 0; i < A.size(); i++){
-        if(stk.empty()){
-            if(B[i] == 0){
-                upfish++;
-            }else{
-                downfish.push(A[i]);
-            }
-        }else{
-            if(B[i] == 0){
-                while(!downfish.empty() && downfish.top() < A[i]){
-                    downfish.pop();
-                }
-                if(downfish.empty()) upfish++;
-            }else{
-                donwfish.push(A[i]);
-            }
+    for(int i = 0; i < (int)A.size(); i++){
+        if(B[i] == 1){
+            downfish.push(A[i]);
+            continue;
         }
+        while(!downfish.empty() && downfish.top() < A[i]){
+            downfish.pop();
+        }
+        if(downfish.empty()) upfish++;
     }
-    return upfish + donwfish.size();
+    return upfish + downfish.size();
 }
