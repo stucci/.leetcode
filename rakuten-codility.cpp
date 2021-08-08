@@ -1,10 +1,14 @@
-// codilityで気をつけることリスト
+////// codilityで気をつけることリスト
 // [ ] 空配列
 // [ ] edge case 値が0のとき。要素数が1つだけのとき
 // [ ] off-by-one error 特に、0のとき
 // [ ] overflow check INT_MAXのときにoverflowしないかどうか？
 // [ ] limit check limitのチェックはlimitを超えるか、overflowして、0より小さいか？を調べる
 // [ ] test caseは多めに。油断しない。
+
+// ref
+// [Codilityで練習 - Qiita](https://qiita.com/rsahara/items/df20f6858e3602a7d06d#%E6%8F%90%E5%87%BA%E5%89%8D%E3%81%AE%E3%82%82%E3%81%86%E4%B8%80%E6%8D%BB%E3%82%8A)
+// [GitHub - Mickey0521/Codility： My Solutions to Codility (100% performance)](https://github.com/Mickey0521/Codility)
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -505,4 +509,375 @@ int solution(vector<int> &A, vector<int> &B){
         if(downfish.empty()) upfish++;
     }
     return upfish + downfish.size();
+}
+
+// -----------------------------------------------------------------------------
+// Nesting
+
+int solution(string &S){
+    int cnt=0;
+    for(auto c : S){
+        if(c == '(') cnt++;
+        else cnt--;
+        if(cnt < 0) return 0;
+    }
+    if(cnt == 0) return 1;
+    return 0;
+}
+
+// -----------------------------------------------------------------------------
+// StoneWall
+
+// you can use includes, for example:
+#include <stack>
+
+int solution(vector<int> &H) {
+    // write your code in C++14 (g++ 6.2.0)
+    stack<int> heights;
+    int cnt = 0;
+    for(auto h : H){
+        while(!heights.empty()){
+            int top = heights.top();
+            if(top > h){
+                heights.pop();
+            }else if(top == h){
+                break;
+            }else{
+                heights.push(h);
+                cnt++;
+                break;
+            }
+        }
+        if(heights.empty()){
+            heights.push(h);
+            cnt++;
+        }
+    }
+    return cnt;
+}
+
+// -----------------------------------------------------------------------------
+// Dominator
+
+// you can use includes, for example:
+#include <unordered_map>
+#include <limits>
+
+int solution(vector<int> &A) {
+    // write your code in C++14 (g++ 6.2.0)
+    unordered_map<int, int> m;
+    for(auto a : A){
+        m[a]++;
+    }
+    int curmax = 0, curval = numeric_limits<int>::min();
+    for(auto p : m){
+        if(p.second > curmax){
+            curmax = p.second;
+            curval = p.first;
+        }
+    }
+    if(curmax > (int)A.size() / 2){
+        for(int i = 0; i < (int)A.size(); i++){
+            if(curval == A[i]) return i;
+        }
+    }
+    return -1;
+}
+
+// -----------------------------------------------------------------------------
+// EquiLeader
+
+// you can use includes, for example:
+// #include <algorithm>
+
+int solution(vector<int> &A) {
+    // write your code in C++14 (g++ 6.2.0)
+    int n = A.size();
+    int cnt = 0, val = 0;
+    for(int i = 0; i < n; i++){
+        if(cnt==0){
+            cnt++;
+            val = A[i];
+        }else{
+            (val == A[i]) ? cnt++ : cnt--;
+        }
+    }
+    if(cnt == 0) return 0;
+    int lcnt = 0;
+    for(auto a : A){
+        if(val == a) lcnt++;
+    }
+    if(lcnt <= n/2) return 0;
+    int curcnt = 0, ret = 0;
+    for(int i = 0; i < n; i++){
+        if(A[i] == val) curcnt++;
+        int remcnt = lcnt - curcnt;
+        if(curcnt > (i + 1) / 2 && remcnt > (n - i - 1) / 2){
+            ret++;
+        }
+    }
+    return ret;
+}
+
+// -----------------------------------------------------------------------------
+// MaxProfit
+
+// you can use includes, for example:
+// #include <algorithm>
+
+int solution(vector<int> &A) {
+    // write your code in C++14 (g++ 6.2.0)
+    if(A.size() == 0) return 0;
+    int minprice = A[0], profit = 0;
+    for(auto a : A){
+        minprice = min(minprice, a);
+        profit = max(profit, a - minprice);
+    }
+    return profit;
+}
+
+// -----------------------------------------------------------------------------
+// MaxSliceSum
+
+// you can use includes, for example:
+// #include <algorithm>
+
+int solution(vector<int> &A) {
+    // write your code in C++14 (g++ 6.2.0)
+    int sum = A[0], ret = A[0];
+    for(int i = 1; i < (int)A.size(); i++){
+        sum = max(sum + A[i], A[i]);
+        ret = max(ret, sum);
+    }
+    return ret;
+}
+
+// -----------------------------------------------------------------------------
+// MaxDoubleSliceSum
+
+int solution(vector<int> &A) {
+    // write your code in C++14 (g++ 6.2.0)
+    int n = A.size();
+    if(n == 3) return 0;
+    vector<int> lsum(n);
+    vector<int> rsum(n);
+    for(int i = 1; i < n-1; i++){
+        lsum[i] = max(0, lsum[i-1] + A[i]);
+        int ri = n-i-1;
+        rsum[ri] = max(0, rsum[ri+1] + A[ri]);
+    }
+    int ret = 0;
+    for(int i = 1; i < n-1; i++){
+        ret = max(ret, lsum[i-1] + rsum[i+1]);
+    }
+    return ret;
+}
+
+// -----------------------------------------------------------------------------
+// CountFactors
+
+int solution(int N) {
+    // write your code in C++14 (g++ 6.2.0)
+    int cnt = 0;
+    for(int i = 1; i*i <= N; i++){
+        if(N % i == 0) cnt += 2;
+        if(i*i == N) cnt--;
+    }
+    return cnt;
+}
+
+// -----------------------------------------------------------------------------
+// MinPerimeterRectangle
+
+// you can use includes, for example:
+#include <limits>
+
+int solution(int N) {
+    // write your code in C++14 (g++ 6.2.0)
+    int ret = std::numeric_limits<int>::max();
+    for(int i = 1; i*i <= N; i++){
+        if(N % i == 0){
+            int A = i, B = N / i;
+            ret = min(ret, 2 * (A + B));
+        }
+    }
+    return ret;
+}
+
+// -----------------------------------------------------------------------------
+// ChocolatesByNumbers
+
+int gcd(int a, int b){
+    if(a % b==0) return b;
+    return gcd(b, a % b);
+}
+
+int solution(int N, int M) {
+    // write your code in C++14 (g++ 6.2.0)
+    return N / gcd(N, M);
+}
+
+// -----------------------------------------------------------------------------
+// AbsDistinct
+
+// you can use includes, for example:
+#include <set>
+
+int solution(vector<int> &A) {
+    // write your code in C++14 (g++ 6.2.0)
+    set<int> s;
+    for(auto a : A){
+        s.insert(abs(a));
+    }
+    return s.size();
+}
+
+// -----------------------------------------------------------------------------
+// CountDistinctSlices
+
+// you can use includes, for example:
+#include <unordered_set>
+
+int solution(int M, vector<int> &A) {
+    // write your code in C++14 (g++ 6.2.0)
+    unordered_set<int> s;
+    int ret = 0, n = A.size();
+    for(int i = 0, j = 0; j < n; ){
+        while(j < n && s.count(A[j])==0){
+            ret += (j - i + 1);
+            s.emplace(A[j]);
+            j++;
+        }
+        while(s.count(A[j])){
+            s.erase(A[i]);
+            i++;
+        }
+    }
+    return min(ret, (int)1e9);
+}
+
+// -----------------------------------------------------------------------------
+// MaxNonoverlappingSegments
+
+int solution(vector<int> &A, vector<int> &B) {
+    // write your code in C++14 (g++ 6.2.0)
+    int cur = -1, cnt = 0;
+    for(int i = 0; i < (int)A.size(); i++){
+        if(cur < A[i]){
+            cur = B[i];
+            cnt++;
+        }
+    }
+    return cnt;
+}
+
+// -----------------------------------------------------------------------------
+// TieRopes
+
+int solution(int K, vector<int> &A) {
+    // write your code in C++14 (g++ 6.2.0)
+    int cnt = 0, sum = 0;
+    for(auto a : A){
+        sum += a;
+        if(sum >= K){
+            cnt++;
+            sum = 0;
+        }
+    }
+    return cnt;
+}
+
+// -----------------------------------------------------------------------------
+// CountNonDivisible
+
+// you can use includes, for example:
+#include <unordered_map>
+
+vector<int> solution(vector<int> &A) {
+    // write your code in C++14 (g++ 6.2.0)
+    int n = A.size();
+    unordered_map<int, int> m;
+    for(auto a : A){
+        m[a]++;
+    }
+    vector<int> cnt(2*n+1);
+    for(int i = 1; i <= n*2; i++){
+        if(m.count(i)){
+            for(int j = i; j <= n*2; j+=i){
+                cnt[j] += m[i];
+            }
+        }
+    }
+    vector<int> ret(n);
+    for(int i = 0; i < n; i++){
+        ret[i] = n - cnt[A[i]];
+    }
+    return ret;
+}
+
+// -----------------------------------------------------------------------------
+// Ladder
+
+vector<int> solution(vector<int> &A, vector<int> &B) {
+    // write your code in C++14 (g++ 6.2.0)
+    vector<int> fib(50001);
+    fib[0] = 1;
+    fib[1] = 1;
+    for(int i = 2; i < (int)fib.size(); i++){
+        fib[i] = fib[i-1] + fib[i-2];
+        fib[i] %= (1 << 30);
+    }
+    int n = A.size();
+    vector<int> ret(n);
+    for(int i = 0; i < n; i++){
+        ret[i] = fib[A[i]] % (1 << B[i]);
+    }
+    return ret;
+}
+
+// -----------------------------------------------------------------------------
+// MinMaxDivision
+
+bool check(int K, vector<int> &A, int mid){
+    int sum = 0, cnt = 0;
+    for(auto a : A){
+        if(a > mid) return false;
+        sum += a;
+        if(sum > mid){
+            sum = a;
+            cnt++;
+        }
+    }
+    return (cnt < K);
+}
+
+int solution(int K, int M, vector<int> &A) {
+    // write your code in C++14 (g++ 6.2.0)
+    int n = A.size(), lo = -1, hi = M * n;
+    while(hi - lo > 1){
+        int mid = lo + (hi - lo) / 2;
+        if(check(K, A, mid)){
+            hi = mid;
+        }else{
+            lo = mid;
+        }
+    }
+    return hi;
+}
+
+// -----------------------------------------------------------------------------
+// NumberSolitaire
+
+int solution(vector<int> &A) {
+    // write your code in C++14 (g++ 6.2.0)
+    int n = A.size();
+    vector<int> dp(n);
+    dp[0] = A[0];
+    for(int i = 0; i < n; i++){
+        dp[i] = dp[i-1] + A[i];
+        for(int j = 2; j <= 6; j++){
+            if(i-j >= 0) dp[i] = max(dp[i], dp[i-j] + A[i]);
+        }
+    }
+    return dp[n-1];
 }
