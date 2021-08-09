@@ -1,10 +1,14 @@
-////// codilityで気をつけることリスト
-// [ ] 空配列
-// [ ] edge case 値が0のとき。要素数が1つだけのとき
-// [ ] off-by-one error 特に、0のとき
-// [ ] overflow check INT_MAXのときにoverflowしないかどうか？
-// [ ] limit check limitのチェックはlimitを超えるか、overflowして、0より小さいか？を調べる
-// [ ] test caseは多めに。油断しない。
+// [1. Iterations lesson - Learn to Code - Codility](https://app.codility.com/programmers/lessons/1-iterations/)
+
+/*** codilityで気をつけることリスト ***
+- [x] 空配列
+- [x] edge case 値が0のとき。要素数が1つだけのとき
+- [x] off-by-one error 特に、0のとき
+- [x] overflow check INT_MAXのときにoverflowしないかどうか？
+- [x] 配列外参照
+- [x] limit check limitのチェックはlimitを超えるか、overflowして、0より小さいか？を調べる
+- [x] test caseは多めに。油断しない。
+***/
 
 // ref
 // [Codilityで練習 - Qiita](https://qiita.com/rsahara/items/df20f6858e3602a7d06d#%E6%8F%90%E5%87%BA%E5%89%8D%E3%81%AE%E3%82%82%E3%81%86%E4%B8%80%E6%8D%BB%E3%82%8A)
@@ -881,3 +885,72 @@ int solution(vector<int> &A) {
     }
     return dp[n-1];
 }
+
+// -----------------------------------------------------------------------------
+// AestheticTree (Rakuten coding test)
+
+int solution(vector<int> &A) {
+    // write your code in C++14 (g++ 6.2.0)
+    int n = A.size(), ret = 0;
+    for(int i = 0; i < n-1; ){
+        int cnt = 0;
+        while(i < n - 1 && A[i] < A[i+1]) {
+            cnt++;
+            i++;
+        }
+        ret += (cnt / 2);
+
+        cnt = 0;
+        while(i < n - 1 && A[i] == A[i+1]) {
+            cnt++;
+            i++;
+        }
+        ret += ((cnt + 1) / 2);
+
+        cnt = 0;
+        while(i < n - 1 && A[i] > A[i+1]) {
+            cnt++;
+            i++;
+        }
+        ret += (cnt / 2);
+    }
+    return ret;
+}
+
+/* test case
+[6, 5, 4, 3, 2]
+[2, 2, 2, 2, 2]
+[2, 3, 4, 5, 6]
+[5, 4, 3, 4, 5]
+[5, 4, 3, 3, 3]
+[2, 3, 2, 5, 6]
+[2, 2, 3, 3, 3]
+[2, 2, 3, 3, 2, 2, 3, 3, 4]
+[2, 3]
+[3, 2]
+[2, 2]
+[2, 3, 4]
+[2, 2, 2]
+[3, 2, 4]
+
+[2, 3, 2, 5, 6]
+[2, 2, 3, 3, 3]
+[2, 2, 3, 3, 2, 2, 3, 3, 4]
+[2, 2]
+[2, 3, 4]
+[2, 3, 4, 5]
+[2, 3, 4, 5, 6]
+[2, 3, 4, 5, 6, 7]
+[2, 3, 4, 5, 6, 7, 8]
+[2, 3, 4, 5, 6, 7, 8, 9]
+
+[2, 3, 2, 5, 6]
+[2, 2, 3, 3, 3]
+[2, 2, 3, 3, 2, 2, 3, 3, 4]
+[2, 2]
+[2, 3, 4]
+[2, 3, 4, 5]
+[2, 3, 4, 5, 6]
+[2, 3, 4, 5, 6, 7]
+[5, 5, 6, 7, 8, 8, 8, 2, 3, 2]
+*/
