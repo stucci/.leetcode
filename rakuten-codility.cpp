@@ -2,11 +2,11 @@
 
 /*** codilityで気をつけることリスト ***
 - [x] 空配列
-- [x] edge case 値が0のとき。要素数が1つだけのとき
-- [x] off-by-one error 特に、0のとき
-- [x] overflow check INT_MAXのときにoverflowしないかどうか？
+- [x] edge case: 値が0のとき。要素数が1つだけのとき
+- [x] off-by-one error: 特に、0のとき
+- [x] overflow check: INT_MAXのときにoverflowしないかどうか？
 - [x] 配列外参照
-- [x] limit check limitのチェックはlimitを超えるか、overflowして、0より小さいか？を調べる
+- [x] limit check: limitのチェックはlimitを超えるか、overflowして、0より小さいか？を調べる
 - [x] test caseは多めに。油断しない。
 ***/
 
